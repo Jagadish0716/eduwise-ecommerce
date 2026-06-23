@@ -56,30 +56,30 @@ pipeline {
       }
     }
 
-//    stage('Deploy To Docker Swarm') {
-//      steps {
-//        sh 'docker stack deploy -c docker-stack.yml ${STACK_NAME}'
-//        sh 'docker service update --image ${IMAGE_NAME} --with-registry-auth ${SERVICE_NAME}'
-//        sh 'docker service scale ${SERVICE_NAME}=3'
-//      }
-//    }
-//
-//    stage('Verify Deployment') {
-//      steps {
-//        sh 'docker service ls'
-//        sh 'docker service ps ${SERVICE_NAME} --no-trunc'
-//      }
-//    }
+    stage('Deploy To Docker Swarm') {
+      steps {
+        sh 'docker stack deploy -c docker-stack.yml ${STACK_NAME}'
+        sh 'docker service update --image ${IMAGE_NAME} --with-registry-auth ${SERVICE_NAME}'
+        sh 'docker service scale ${SERVICE_NAME}=3'
+      }
+    }
+
+    stage('Verify Deployment') {
+      steps {
+        sh 'docker service ls'
+        sh 'docker service ps ${SERVICE_NAME} --no-trunc'
+      }
+    }
   }
 
-//  post {
-//    failure {
-//      echo 'Deployment failed. Rolling back to previous Swarm service version.'
-//      sh 'docker service rollback ${SERVICE_NAME} || true'
-//      sh 'docker service ps ${SERVICE_NAME} --no-trunc || true'
-//    }
-//    always {
-//      sh 'docker logout || true'
-//    }
-//  }
+  post {
+    failure {
+      echo 'Deployment failed. Rolling back to previous Swarm service version.'
+      sh 'docker service rollback ${SERVICE_NAME} || true'
+      sh 'docker service ps ${SERVICE_NAME} --no-trunc || true'
+    }
+    always {
+      sh 'docker logout || true'
+    }
+  }
 }
