@@ -18,7 +18,7 @@ pipeline {
 
   tools {
     maven 'Maven-3'
-    jdk 'JDK-17'
+    //jdk 'JDK-17' - commentde bcz jdk-21 is already insatlled in node
   }
 
   stages {
